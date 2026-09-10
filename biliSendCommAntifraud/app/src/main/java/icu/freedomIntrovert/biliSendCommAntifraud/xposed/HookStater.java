@@ -1,35 +1,22 @@
 package icu.freedomIntrovert.biliSendCommAntifraud.xposed;
 
-import java.util.HashSet;
-import java.util.Set;
-import io.github.libxposed.api.XposedInterface;
+import de.robv.android.xposed.XposedBridge;
 
-public final class HookStater {
-    private final XposedInterface api;
-    private final int version;
-    private final ClassLoader loader;
-    private final Set<Class<?>> installed = new HashSet<>();
+public class HookStater {
+    public int appVersionCode;
+    public ClassLoader classLoader;
 
-    private final String packageName;
-    private final String processName;
-
-    public HookStater(XposedInterface api, int version, ClassLoader loader,
-                      String packageName, String processName) {
-        this.api = api;
-        this.version = version;
-        this.loader = loader;
-        this.packageName = packageName;
-        this.processName = processName;
+    public HookStater(int appVersionCode, ClassLoader classLoader) {
+        this.appVersionCode = appVersionCode;
+        this.classLoader = classLoader;
     }
 
-    public synchronized void startHook(BaseHook feature) {
-        if (installed.contains(feature.getClass())) return;
+    public void startHook(BaseHook baseHook){
         try {
-            feature.install(api, version, loader);
-            installed.add(feature.getClass());
-        } catch (Throwable failure) {
-            XB.error("event=hook_failed feature=" + feature.getClass().getSimpleName()
-                    + " package=" + packageName + " process=" + processName, failure);
+            baseHook.startHook(appVersionCode,classLoader);
+        } catch (Throwable throwable){
+            XposedBridge.log(baseHook.getClass().getSimpleName()+"加载失败，异常信息："+throwable);
         }
+
     }
 }
