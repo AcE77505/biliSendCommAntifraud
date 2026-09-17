@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import de.robv.android.xposed.XSharedPreferences;
 import icu.freedomIntrovert.biliSendCommAntifraud.comment.ForwardDynamic;
 
 public class Config {
@@ -18,9 +19,20 @@ public class Config {
         sp = context.getSharedPreferences("config", Context.MODE_PRIVATE);
     }
 
+    private Config(SharedPreferences sharedPreferences) {
+        sp = sharedPreferences;
+    }
+
     public synchronized static Config getInstance(Context context){
         if (instance == null){
             instance = new Config(context.getApplicationContext());
+        }
+        return instance;
+    }
+
+    public synchronized static Config getInstanceByXPEnvironment(){
+        if (instance == null){
+            instance = new Config(new XSharedPreferences(BuildConfig.APPLICATION_ID,"config"));
         }
         return instance;
     }
