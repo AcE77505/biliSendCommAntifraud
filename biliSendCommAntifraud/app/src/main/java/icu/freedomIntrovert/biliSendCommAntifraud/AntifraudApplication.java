@@ -23,7 +23,7 @@ public final class AntifraudApplication extends Application
     private final Map<XposedService, String> services = new LinkedHashMap<>();
     private final List<Runnable> listeners = new CopyOnWriteArrayList<>();
     private final Handler main = new Handler(Looper.getMainLooper());
-    private volatile String status = "等待 API 102 框架连接；未连接时仍可使用手动检查。";
+    private volatile String status = "等待 API 101 框架连接；未连接时仍可使用手动检查。";
     private SharedPreferences local;
     private final SharedPreferences.OnSharedPreferenceChangeListener configListener = (prefs, key) -> {
         if (key == null || HookSettings.isSharedKey(key)) publish();
@@ -62,8 +62,8 @@ public final class AntifraudApplication extends Application
         for (XposedService service : services.keySet()) {
             try {
                 String framework = service.getFrameworkName() + " " + service.getFrameworkVersion();
-                if (service.getApiVersion() < 102) {
-                    services.put(service, framework + "：需要 API 102");
+                if (service.getApiVersion() < 101) {
+                    services.put(service, framework + "：需要 API 101");
                     continue;
                 }
                 if ((service.getFrameworkProperties() & XposedService.PROP_CAP_REMOTE) == 0) {

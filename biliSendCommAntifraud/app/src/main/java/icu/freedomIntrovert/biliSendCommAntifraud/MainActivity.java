@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cookie, menu);
-        menu.add(0, 62001, 0, "API 102 框架状态");
+        menu.add(0, 62001, 0, "API 101 框架状态");
         menu.add(0, 62002, 1, "导入旧版设置");
         return true;
     }
@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (item.getItemId() == 62001) {
             AntifraudApplication app = AntifraudApplication.get();
             AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setTitle("API 102 框架状态")
+                    .setTitle("API 101 框架状态")
                     .setMessage(app.getFrameworkStatus())
                     .setPositiveButton("重新同步配置", (d, which) -> app.publish())
                     .setNegativeButton("关闭", null).create();
